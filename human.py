@@ -32,12 +32,10 @@ class Female(Human):
         super().__init__(name, sex='Ж')
 
 
-print(f'{__name__=}')
-
 if __name__ == '__main__':
     person1 = Male('Гоша')
     person2 = Female('Маша')
+    person3 = Male('Влад')
 
     person1.marry(person2)
-    print(f'{person1.name=} {person1.sex=}')
-    print(f'{person2.name=} {person2.sex=}')
+    person1.marry(person3)
