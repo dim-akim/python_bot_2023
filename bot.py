@@ -10,6 +10,7 @@ import logging
 import datetime
 
 from key import TOKEN
+from fsm import register_handler
 
 logging.basicConfig(
     format='%(asctime)s | %(levelname)s | %(name)s: %(message)s',
@@ -40,6 +41,7 @@ def main():
     dispatcher.add_handler(callback_handler)
     dispatcher.add_handler(set_timer_handler)
     dispatcher.add_handler(stop_timer_handler)
+    dispatcher.add_handler(register_handler)
     dispatcher.add_handler(echo_handler)
 
     updater.start_polling()
@@ -153,6 +155,7 @@ def keyboard_react(update: Update, context: CallbackContext):
 
 def set_timer(update: Update, context: CallbackContext):
     user_id = update.effective_user.id
+    key = f'{user_id}_timer'
     context.bot_data['user_id'] = user_id
     context.bot_data['timer'] = datetime.datetime.now()
     context.bot_data['timer_job'] = context.job_queue.run_repeating(show_seconds, 1)
