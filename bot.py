@@ -74,6 +74,7 @@ def do_start(update: Update, context: CallbackContext):
         '/start',
         '/keyboard',
         '/inline_keyboard',
+        '/register',
         '/set',
         'html',
         '<b>Сам жирный</b>',
