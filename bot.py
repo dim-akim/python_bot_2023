@@ -9,13 +9,10 @@ from telegram.ext import Filters
 import logging
 import datetime
 
-from key import TOKEN
+from settings import TOKEN, ADMIN_ID
 from fsm import register_handler
 
-logging.basicConfig(
-    format='%(asctime)s | %(levelname)s | %(name)s: %(message)s',
-    level=logging.INFO
-)
+
 logger = logging.getLogger(__name__)
 
 
@@ -52,16 +49,22 @@ def main():
 def do_echo(update: Update, context: CallbackContext):
     user_id = update.message.from_user.id
     username = update.message.from_user.username
-    text = update.message.text
 
     logger.info(f'{username=} {user_id=} вызвал функцию echo')
     answer = [
         f'Твой {user_id=}',
         f'Твой {username=}',
-        f'Ты написал {text}'
+        f'Ты написал {update.message.text}'
     ]
     answer = '\n'.join(answer)
     update.message.reply_text(answer, reply_markup=ReplyKeyboardRemove())
+    text = [
+        f'{user_id=} Обратился к боту!',
+        f'Он написал {update.message.text}',
+        f'Ответь ему: @{username}'
+    ]
+    text = '\n'.join(text)
+    context.bot.send_message(chat_id=ADMIN_ID, text=text)
 
 
 def do_start(update: Update, context: CallbackContext):
@@ -76,16 +79,7 @@ def do_start(update: Update, context: CallbackContext):
         '/inline_keyboard',
         '/register',
         '/set',
-        'html',
-        '<b>Сам жирный</b>',
-        '<i>Курсив</i>',
-        '<code>код</code>',
-        '<s>перечеркнутый</s>',
-        '<u>подчеркнутый</u>',
-        '<pre language="python">print("Hello, World!")</pre>',
-        '<a href="https://technodzen.com/nauka/'
-        'sozdan-magnitnyy-gel-zazhivlyayuschiy-rany-u-diabetikov-v-tri-raza-bystree?'
-        'utm_source=yxnews&utm_medium=desktop">Сайт</a>'
+        'html'
     ]
     text = '\n'.join(text)
     # context.bot.send_message(
